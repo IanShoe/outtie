@@ -5,7 +5,19 @@ const transform = require('stream-transform');
 const writerMap = {};
 
 module.exports = function (splits) {
+  if (!Array.isArray(splits)) {
+    throw new Error('Splits must be an Array');
+  }
   splits.forEach(function (split) {
+    if (!split.filePath) {
+      throw new Error('Split must have File Path Property');
+    }
+    if (!split.name) {
+      throw new Error('Split must have Name Property');
+    }
+    if (!split.headers) {
+      throw new Error('Split must have Header Property');
+    }
     const writer = csvWriter({
       headers: split.headers
     });
@@ -29,15 +41,10 @@ module.exports = function (splits) {
       cb();
     }),
     end: function (err) {
-      if (err) {
-        console.log('error', err);
-      } else {
-        for (let key in writerMap) {
-          if (writerMap.hasOwnProperty(key)) {
-            writerMap[key].end();
-          }
+      for (let key in writerMap) {
+        if (writerMap.hasOwnProperty(key)) {
+          writerMap[key].end();
         }
-        process.exit();
       }
     }
   };
