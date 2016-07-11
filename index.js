@@ -17,8 +17,12 @@ module.exports = function (splits) {
       for (let key in record) {
         if (record.hasOwnProperty(key)) {
           const writer = writerMap[key];
-          if (record[key] !== undefined) {
-            writer.write(record[key]);
+          if (record[key] !== undefined && record[key] !== null) {
+            if (Array.isArray(record[key])) {
+              record[key].forEach(writer.write.bind(writer));
+            } else {
+              writer.write(record[key]);
+            }
           }
         }
       }
