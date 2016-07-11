@@ -14,11 +14,12 @@ module.exports = function (splits) {
   });
   return {
     write: transform(function (record, cb) {
-      console.log('writing');
       for (let key in record) {
         if (record.hasOwnProperty(key)) {
           const writer = writerMap[key];
-          writer.write(record[key]);
+          if (record[key] !== undefined) {
+            writer.write(record[key]);
+          }
         }
       }
       cb();

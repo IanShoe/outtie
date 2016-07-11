@@ -1,6 +1,6 @@
 {
   "name": "outtie",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CSV out",
   "main": "index.js",
   "scripts": {
